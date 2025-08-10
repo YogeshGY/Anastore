@@ -1,0 +1,66 @@
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 24px 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  width: 320px;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+}
+
+.popup h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+  text-align: center;
+  color: #333;
+}
+
+.popup form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.popup input,
+.popup select {
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.popup input:focus,
+.popup select:focus {
+  border-color: #007bff;
+}
+
+.close_popup {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  text-align: right;
+}
+
+.addProduct_button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.addProduct_button:hover {
+  background-color: #0056b3;
+}
