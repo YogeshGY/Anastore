@@ -6,21 +6,35 @@ import LoaderComponent from "./Components/Loader";
 import "./App.css";
 import ProductDetails from "./Pages/ProductDetail";
 import Cart from "./Pages/Cart";
+import ProtectedRoute from "./protectedRoute";
+// import cookies from "js-cookie";
+// import { useSelector } from "react-redux";
 
 const ProductList = React.lazy(() => import("./Pages/ProductList"));
 const Login = React.lazy(() => import("./Pages/login"));
 
 const App = () => {
+  // const { logedStatus } = useSelector((state) => state.auth);
+
+  // const isAuthenticated =
+  //   cookies && cookies.get("isAuthenticated") ? true : false;
+
+  // if (isAuthenticated) {
+  //   this.props.navigate(logedStatus === "admin" ? "/admin" : "/");
+  // }
+
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Suspense fallback={<LoaderComponent />}>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route exact path="/" element={<ProductList />} />
-            <Route exact path="/admin" element={<ProductList />} />
-            <Route exact path="/products/:id" element={<ProductDetails />} />
-            <Route exact path="/cart" element={<Cart />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<ProductList />} />
+              <Route path="/admin" element={<ProductList />} />
+              <Route path="/products/:id" element={<ProductDetails />} />
+              <Route path="/cart" element={<Cart />} />
+            </Route>
           </Routes>
         </Suspense>
       </BrowserRouter>

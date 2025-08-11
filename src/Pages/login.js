@@ -1,7 +1,9 @@
 import { Component } from "react";
 import { useNavigate } from "react-router";
 import styles from "./login.module.css";
-
+import { login } from "../redux/auth";
+import { useDispatch } from "react-redux";
+import { logedStatusFunction } from "../redux/productSlice";
 class Login extends Component {
   state = {
     Username: "",
@@ -25,6 +27,8 @@ class Login extends Component {
     if (Username === "" || password === "") {
       this.setState({ errorMessage: "Enter Both user name and password" });
     } else if (Username === "Anacity" && password === "Anarock") {
+      this.props.dispatch(logedStatusFunction(role));
+      this.props.dispatch(login());
       this.props.navigate(role === "admin" ? "/admin" : "/");
     } else {
       if (Username !== "Anacity") {
@@ -34,7 +38,6 @@ class Login extends Component {
       }
     }
   };
-
   render() {
     const { Username, password, errorMessage, role } = this.state;
 
@@ -90,6 +93,7 @@ class Login extends Component {
 
 export default function LoginWithNavigate(props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  return <Login {...props} navigate={navigate} />;
+  return <Login {...props} navigate={navigate} dispatch={dispatch} />;
 }

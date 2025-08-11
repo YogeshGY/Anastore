@@ -17,7 +17,7 @@ const productSlice = createSlice({
     items: [],
     loading: false,
     error: null,
-    logedStatus: "",
+    logedStatus: "user",
   },
   reducers: {
     addProduct: (state, action) => {
@@ -31,6 +31,9 @@ const productSlice = createSlice({
       state.items = state.items.map((item) =>
         item.id === action.payload ? { ...item, inCart: !item.inCart } : item
       );
+    },
+    logedStatusFunction: (state, action) => {
+      state.logedStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -53,7 +56,7 @@ const productSlice = createSlice({
   },
 });
 
-export const { addProduct, deleteProduct, updateCartdetails } =
+export const { addProduct, deleteProduct, updateCartdetails, logedStatusFunction } =
   productSlice.actions;
 
 export default productSlice.reducer;

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoaderComponent from "../Components/Loader";
 import styles from "./productdetail.module.css";
 import Header from "../Components/Header";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   addItemCart,
   decrementQuantity,
   incrementQuantity,
 } from "../redux/cartSlice";
-import { updateCartdetails } from "../redux/productSlice";
+import { updateCartdetails, deleteProduct } from "../redux/productSlice";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -18,8 +19,10 @@ const ProductDetails = () => {
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { items: cartItems } = useSelector((state) => state.cart);
+  const { logedStatus } = useSelector((state) => state.product);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -40,6 +43,12 @@ const ProductDetails = () => {
   const addToCartItems = (item) => {
     dispatch(addItemCart({ ...item, quantity: 1 }));
     dispatch(updateCartdetails({ id: item.id }));
+  };
+
+  const removeProduct = (id) => {
+    dispatch(deleteProduct(id));
+    alert("Product removed successfully");
+    navigate("/admin");
   };
 
   const handleIncrementQuantity = (id) => {
@@ -88,12 +97,19 @@ const ProductDetails = () => {
                 -
               </button>
             </div>
-          ) : (
+          ) : logedStatus === "user" ? (
             <button
               className={styles.addtocart_button}
               onClick={() => addToCartItems(product)}
             >
               Add to Cart
+            </button>
+          ) : (
+            <button
+              className={styles.addtocart_button}
+              onClick={() => removeProduct(product, id)}
+            >
+              Remove Product
             </button>
           )}
         </div>
