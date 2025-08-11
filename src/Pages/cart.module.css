@@ -157,3 +157,13 @@
   border: none;
   cursor: pointer;
 }
+
+@media (max-width: 576px) {
+  .cartList {
+    gap: 10px;
+  }
+  .cartCard {
+    width: 97px;
+    max-height: 320px;
+  }
+}

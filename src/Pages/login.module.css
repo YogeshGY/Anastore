@@ -5,6 +5,7 @@
   gap: 100px;
   min-height: 100vh;
 }
+
 .loginpage_image {
   display: block;
 }
@@ -108,4 +109,36 @@
   font-size: 14px;
   margin-top: 0px;
   text-align: center;
+}
+
+@media (max-width: 576px) {
+  .loginpage_container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .login_card {
+    max-width: 100%;
+    padding: 20px;
+    box-shadow: 0 0 8px 3px rgba(255, 172, 241, 0.25);
+  }
+
+  .login_heading {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+
+  .login_input,
+  .role_select {
+    font-size: 14px;
+    padding: 8px;
+    margin-bottom: 16px;
+  }
+
+  .login_button {
+    max-width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
 }

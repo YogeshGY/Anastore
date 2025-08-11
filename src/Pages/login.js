@@ -1,13 +1,13 @@
 import { Component } from "react";
 import { useNavigate } from "react-router";
-import styles from "./login.module.css"; // CSS module import
+import styles from "./login.module.css";
 
 class Login extends Component {
   state = {
     Username: "",
     password: "",
     errorMessage: "",
-    // role: "",
+    role: "user",
   };
 
   handleUserName = (event) => {
@@ -20,12 +20,12 @@ class Login extends Component {
 
   handleSubmitt = (event) => {
     event.preventDefault();
-    const { Username, password } = this.state;
+    const { Username, password, role } = this.state;
 
     if (Username === "" || password === "") {
       this.setState({ errorMessage: "Enter Both user name and password" });
     } else if (Username === "Anacity" && password === "Anarock") {
-      this.props.navigate("/");
+      this.props.navigate(role === "admin" ? "/admin" : "/");
     } else {
       if (Username !== "Anacity") {
         this.setState({ errorMessage: "User Name Not Matched" });
@@ -36,7 +36,7 @@ class Login extends Component {
   };
 
   render() {
-    const { Username, password, errorMessage } = this.state;
+    const { Username, password, errorMessage, role } = this.state;
 
     return (
       <div className={styles.loginpage_container}>
@@ -65,10 +65,14 @@ class Login extends Component {
               className={styles.login_input}
             />
 
-            {/* <select> 
+            <select
+              value={role}
+              onChange={(e) => this.setState({ role: e.target.value })}
+              className={styles.role_select}
+            >
               <option value="user">User</option>
               <option value="admin">Admin</option>
-            </select> */}
+            </select>
 
             <button type="submit" className={styles.login_button}>
               Login
@@ -86,5 +90,6 @@ class Login extends Component {
 
 export default function LoginWithNavigate(props) {
   const navigate = useNavigate();
+
   return <Login {...props} navigate={navigate} />;
 }
