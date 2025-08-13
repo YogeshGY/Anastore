@@ -1,99 +1,86 @@
-import { Component } from "react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
 import styles from "./login.module.css";
-import { login } from "../redux/auth";
-import { useDispatch } from "react-redux";
-import { logedStatusFunction } from "../redux/productSlice";
-class Login extends Component {
-  state = {
-    Username: "",
-    password: "",
-    errorMessage: "",
-    role: "user",
-  };
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../redux/auth";
+import { useNavigate, Navigate } from "react-router-dom";
+import cookies from "js-cookie";
 
-  handleUserName = (event) => {
-    this.setState({ Username: event.target.value });
-  };
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  handlePassword = (event) => {
-    this.setState({ password: event.target.value });
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  handleSubmitt = (event) => {
-    event.preventDefault();
-    const { Username, password, role } = this.state;
+  const loading = useSelector((state) => state.auth.loading);
+  const error = useSelector((state) => state.auth.error);
+  const userDatas = useSelector((state) => state.auth.userDatas);
 
-    if (Username === "" || password === "") {
-      this.setState({ errorMessage: "Enter Both user name and password" });
-    } else if (Username === "Anacity" && password === "Anarock") {
-      this.props.dispatch(logedStatusFunction(role));
-      this.props.dispatch(login());
-      this.props.navigate(role === "admin" ? "/admin" : "/");
-    } else {
-      if (Username !== "Anacity") {
-        this.setState({ errorMessage: "User Name Not Matched" });
-      } else {
-        this.setState({ errorMessage: "Password Not Matched" });
-      }
+  const token = cookies.get("jwtToken") ? true : false;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    try {
+      const result = await dispatch(loginUser({ email, password })).unwrap();
+      // result should contain role from API
+      navigate(result.role === "admin" ? "/admin" : "/");
+    } catch (err) {
+      setErrorMessage(err.message || "Login failed");
     }
   };
-  render() {
-    const { Username, password, errorMessage, role } = this.state;
 
+  if (token && userDatas?.role) {
     return (
-      <div className={styles.loginpage_container}>
-        <div className={styles.login_card}>
-          <h2 className={styles.login_heading}>AnaStore</h2>
-          <form className={styles.form_container} onSubmit={this.handleSubmitt}>
-            <label htmlFor="username" className={styles.input_label}>
-              USER NAME
-            </label>
-            <input
-              id="username"
-              value={Username}
-              type="text"
-              onChange={this.handleUserName}
-              className={styles.login_input}
-            />
-
-            <label htmlFor="password" className={styles.input_label}>
-              PASSWORD
-            </label>
-            <input
-              id="password"
-              value={password}
-              type="password"
-              onChange={this.handlePassword}
-              className={styles.login_input}
-            />
-
-            <select
-              value={role}
-              onChange={(e) => this.setState({ role: e.target.value })}
-              className={styles.role_select}
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-
-            <button type="submit" className={styles.login_button}>
-              Login
-            </button>
-
-            {errorMessage && (
-              <p className={styles.error_message}>{errorMessage}</p>
-            )}
-          </form>
-        </div>
-      </div>
+      <Navigate to={userDatas.role === "admin" ? "/admin" : "/"} replace />
     );
   }
-}
 
-export default function LoginWithNavigate(props) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  return (
+    <div className={styles.loginpage_container}>
+      <div className={styles.login_card}>
+        <h2 className={styles.login_heading}>AnaStore</h2>
+        <form className={styles.form_container} onSubmit={handleSubmit}>
+          <label htmlFor="email" className={styles.input_label}>
+            USER NAME
+          </label>
+          <input
+            id="email"
+            value={email}
+            type="text"
+            onChange={(e) => setEmail(e.target.value)}
+            className={styles.login_input}
+          />
 
-  return <Login {...props} navigate={navigate} dispatch={dispatch} />;
-}
+          <label htmlFor="password" className={styles.input_label}>
+            PASSWORD
+          </label>
+          <input
+            id="password"
+            value={password}
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            className={styles.login_input}
+          />
+
+          <button
+            type="submit"
+            className={styles.login_button}
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
+          {errorMessage && (
+            <p className={styles.error_message}>{errorMessage}</p>
+          )}
+          {error && <p className={styles.error_message}>{error}</p>}
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;

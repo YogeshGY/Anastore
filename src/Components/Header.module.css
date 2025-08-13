@@ -1,9 +1,9 @@
 .headerContainer {
   background-color: #ffffff;
   width: 100%;
-  padding: 15px 30px;
-  margin: 20px;
-  margin-top: 10px;
+  padding: 15px;
+  margin: 0px;
+  margin-bottom: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
@@ -12,6 +12,7 @@
   top: 0;
   left: 0;
   border-radius: 10px;
+  box-sizing: border-box;
 }
 
 .headerContainer h1 {
@@ -30,6 +31,7 @@
   gap: 50px;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap;
 }
 
 .headerContainer nav li {
@@ -67,10 +69,10 @@
   );
   box-shadow: 0 0 8px #ff7300;
   color: rgb(223, 230, 102);
-  padding: 10px 20px;
+  padding: 8px 10px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
@@ -84,26 +86,30 @@
   transform: scale(0.98);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .headerContainer {
-    flex-direction: flex;
+    flex-direction: column; /* fixed invalid value */
     align-items: center;
     gap: 12px;
     padding: 15px;
-    margin: 10px;
+    margin: 5px 0; /* no horizontal overflow */
   }
+
   .headerContainer nav ul {
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
   }
+
   .headerContainer nav li {
     font-size: 14px;
   }
+
   .headerContainer h1 {
     font-size: 18px;
     text-align: center;
   }
+
   .headerContainer button {
     font-size: 8px;
     padding: 4px 6px;

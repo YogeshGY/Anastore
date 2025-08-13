@@ -7,22 +7,11 @@ import "./App.css";
 import ProductDetails from "./Pages/ProductDetail";
 import Cart from "./Pages/Cart";
 import ProtectedRoute from "./protectedRoute";
-// import cookies from "js-cookie";
-// import { useSelector } from "react-redux";
 
 const ProductList = React.lazy(() => import("./Pages/ProductList"));
 const Login = React.lazy(() => import("./Pages/login"));
 
 const App = () => {
-  // const { logedStatus } = useSelector((state) => state.auth);
-
-  // const isAuthenticated =
-  //   cookies && cookies.get("isAuthenticated") ? true : false;
-
-  // if (isAuthenticated) {
-  //   this.props.navigate(logedStatus === "admin" ? "/admin" : "/");
-  // }
-
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -32,7 +21,7 @@ const App = () => {
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<ProductList />} />
               <Route path="/admin" element={<ProductList />} />
-              <Route path="/products/:id" element={<ProductDetails />} />
+              <Route path="/products/:_id" element={<ProductDetails />} />
               <Route path="/cart" element={<Cart />} />
             </Route>
           </Routes>

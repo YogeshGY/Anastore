@@ -1,22 +1,64 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import Cookies from "js-cookie";
+
+const registerApi = "http://localhost:3000/register";
+const loginAPI = "http://localhost:3000/login";
+
+export const registerUser = createAsyncThunk(
+  "auth/registerUser",
+  async (credentials) => {
+    const response = await axios.post(registerApi, credentials);
+    return response.data;
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(loginAPI, credentials, {
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue("Network error or server not reachable");
+      }
+    }
+  }
+);
 
 const authReducer = createSlice({
   name: "auth",
   initialState: {
-    isAuthenticated: false,
+    userDatas: [],
+    loading: false,
+    error: null,
+    logedStatus: "user",
   },
-  reducers: {
-    login: (state) => {
-      state.isAuthenticated = true;
-      Cookies.set("isAuthenticated", "true", { expires: 1 });
-    },
-    logout: (state) => {
-      state.isAuthenticated = false;
-      Cookies.remove("isAuthenticated");
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userDatas = action.payload;
+        state.logedStatus = action.payload.role;
+        Cookies.set("jwtToken", action.payload.token, { expires: 1 });
+        console.log(action.payload);
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message || "Login failed";
+      });
   },
 });
 
-export const { login, logout } = authReducer.actions;
+export const { logout } = authReducer.actions;
 export default authReducer.reducer;

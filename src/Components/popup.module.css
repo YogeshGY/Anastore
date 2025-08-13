@@ -3,12 +3,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  background-color: #f4f3f3;
   padding: 1.5rem 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   width: 90vw;
-  max-width: 320px;
+  max-width: 500px;
   z-index: 1000;
   font-family: Arial, sans-serif;
   box-sizing: border-box;
@@ -46,17 +46,17 @@
 
 .close_popup {
   background: none;
+  width: 100%;
   border: none;
-  color: #007bff;
+  color: #f315eb;
   cursor: pointer;
   font-size: 1rem;
   padding: 0;
-  text-align: right;
-  align-self: flex-end;
+  text-align: center;
 }
 
 .addProduct_button {
-  background-color: #007bff;
+  background-color: #f315eb;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -68,7 +68,8 @@
 }
 
 .addProduct_button:hover {
-  background-color: #0056b3;
+  background-color: #35ff50;
+  color: #333;
 }
 
 @media (max-width: 400px) {

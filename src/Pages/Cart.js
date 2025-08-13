@@ -24,16 +24,16 @@ const Cart = () => {
     setCheckout(total);
   }, [items]);
 
-  const handleRemoveFromCart = (id) => {
-    dispatch(deleteItemCart(id));
+  const handleRemoveFromCart = (_id) => {
+    dispatch(deleteItemCart(_id));
   };
 
-  const handleIncrementQuantity = (id) => {
-    dispatch(incrementQuantity(id));
+  const handleIncrementQuantity = (_id) => {
+    dispatch(incrementQuantity(_id));
   };
 
-  const handleDecrementQuantity = (id) => {
-    dispatch(decrementQuantity(id));
+  const handleDecrementQuantity = (_id) => {
+    dispatch(decrementQuantity(_id));
   };
 
   const paymentDone = () => {
@@ -59,16 +59,16 @@ const Cart = () => {
       <ul className={styles.cartList}>
         {items.length > 0 ? (
           items.map((prod) => (
-            <li key={prod.id} className={styles.cartCard}>
+            <li key={prod._id} className={styles.cartCard}>
               <img
                 src={prod.image}
                 alt={prod.title}
                 className={styles.cartImage}
-                onClick={() => navigate(`/products/${prod.id}`)}
+                onClick={() => navigate(`/products/${prod._id}`)}
               />
               <div
                 className={styles.cartDetails}
-                onClick={() => navigate(`/products/${prod.id}`)}
+                onClick={() => navigate(`/products/${prod._id}`)}
               >
                 <h2 className={styles.cartTitle}>{prod.title}</h2>
                 <p className={styles.cartPrice}>${prod.price}</p>
@@ -76,7 +76,7 @@ const Cart = () => {
               <div className={styles.cartActions}>
                 <button
                   type="button"
-                  onClick={() => handleIncrementQuantity(prod.id)}
+                  onClick={() => handleIncrementQuantity(prod._id)}
                   className={styles.action_buttons}
                 >
                   +
@@ -84,7 +84,7 @@ const Cart = () => {
                 <p className={styles.quantity}>{prod.quantity}</p>
                 <button
                   type="button"
-                  onClick={() => handleDecrementQuantity(prod.id)}
+                  onClick={() => handleDecrementQuantity(prod._id)}
                   className={styles.action_buttons}
                 >
                   -
@@ -92,7 +92,7 @@ const Cart = () => {
               </div>
               <button
                 type="button"
-                onClick={() => handleRemoveFromCart(prod.id)}
+                onClick={() => handleRemoveFromCart(prod._id)}
                 className={styles.removecart_button}
               >
                 Remove

@@ -12,19 +12,19 @@ const cartSlice = createSlice({
       state.items.push(action.payload);
     },
     deleteItemCart: (state, action) => {
-      const index = state.items.findIndex((item) => item.id === action.payload);
+      const index = state.items.findIndex((item) => item._id === action.payload);
       if (index !== -1) {
         state.items.splice(index, 1);
       }
     },
     incrementQuantity: (state, action) => {
-      const item = state.items.find((item) => item.id === action.payload);
+      const item = state.items.find((item) => item._id === action.payload);
       if (item) {
         item.quantity = item.quantity + 1;
       }
     },
     decrementQuantity: (state, action) => {
-      const index = state.items.findIndex((item) => item.id === action.payload);
+      const index = state.items.findIndex((item) => item._id === action.payload);
       if (index !== -1) {
         if (state.items[index].quantity > 1) {
           state.items[index].quantity -= 1;

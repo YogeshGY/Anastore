@@ -1,19 +1,15 @@
 import { useNavigate } from "react-router";
 import styles from "./Header.module.css";
-import { logout } from "../redux/auth";
-import { useDispatch } from "react-redux";
 import cookies from "js-cookie";
 import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const token = cookies.get("isAuthenticated") ? true : false;
+  const token = cookies.get("jwtToken") ? true : false;
   const { items } = useSelector((state) => state.cart);
   const handleLogout = () => {
     if (token) {
-      cookies.remove("isAuthenticated");
-      dispatch(logout());
+      cookies.remove("jwtToken");
       navigate("/login");
     } else {
       navigate("/");
